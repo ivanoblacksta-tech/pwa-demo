@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body style="text-align:center">
+<h2>Admin Page</h2>
+<button onclick="send()">CLICK ME</button>
+
+<script>
+const BACKEND = "https://YOUR_BACKEND_URL";
+
+function send() {
+  fetch(BACKEND + "/notify", { method: "POST" });
+}
+</script>
+</body>
+</html>

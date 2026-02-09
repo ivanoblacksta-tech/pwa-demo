@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body style="background:black;color:white;text-align:center">
+<h2>User Page</h2>
+<p id="status">Waiting for admin...</p>
+
+<script>
+const BACKEND = "https://YOUR_BACKEND_URL";
+const PUBLIC_KEY = "PASTE_VAPID_PUBLIC_KEY";
+
+navigator.serviceWorker.register("sw.js");
+
+async function init() {
+  const permission = await Notification.requestPermission();
+  if (permission !== "granted") return;
+
+  const reg = await navigator.serviceWorker.ready;
+  const sub = await reg.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: PUBLIC_KEY
+  });
+
+  await fetch(BACKEND + "/subscribe", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(sub)
+  });
+
+  document.getElementById("status").innerText = "Subscribed ✔";
+}
+
+init();
+</script>
+</body>
+</html>
